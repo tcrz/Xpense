@@ -6,6 +6,8 @@ import { appAssert, setAuthCookies } from "../../utils/utils";
 export const refreshTokenHandler = handleAsyncController(
   async (req, res, next) => {
     const refreshToken = req.cookies.refreshToken;
+    const accessToken = req.cookies.accessToken;
+    appAssert(accessToken, UNAUTHORIZED, "Missing access token");
     appAssert(refreshToken, UNAUTHORIZED, "Missing refresh token");
     const payload = await refreshTokenService(refreshToken);
     const updatedResponse = await setAuthCookies({
