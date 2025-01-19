@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { CookieOptions, Response } from "express";
 import jwt, { JwtPayload, VerifyOptions } from "jsonwebtoken";
 import { SignOptions } from "jsonwebtoken";
-import { AppErrorCode, JWT_REFRESH_SECRET, JWT_SECRET } from "../constants/constants";
+import { AppErrorCode, JWT_REFRESH_SECRET, JWT_SECRET, REFRESH_PATH } from "../constants/constants";
 import { SessionDocument } from "../models/session.model";
 import { UserDocument } from "../models/user.model";
 import { HttpStatusCode } from "../constants/http";
@@ -64,7 +64,7 @@ export const setAuthCookies = ({
     .cookie("refreshToken", refreshToken, {
       ...cookieOptions,
       expires: REFRESH_TOKEN_EXPIRATION_TIME.expirationTimestamp,
-      path: "/auth/refresh",
+      path: REFRESH_PATH,
     });
 };
 
@@ -127,14 +127,13 @@ export const verifyToken = <TPayload extends object = AccessTokenPayload>(
 
 export const clearAuthCookies = (res: Response) => {
   return res.clearCookie("accessToken").clearCookie("refreshToken", {
-    path: "/auth/refresh",
+    path: REFRESH_PATH,
   });
 }
 
 /**
  * Asserts a condition and throws an AppError if the condition is falsy.
 */
-
 type AppAssert = (
   condition: any,
   httpStatusCode: HttpStatusCode,
