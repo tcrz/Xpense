@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   HttpCode,
   HttpStatus,
@@ -9,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
+import { RegisterDto } from './dtos/register.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -19,6 +21,11 @@ export class AuthController {
   @Post('login')
   async login(@Request() request) {
     return this.authService.login(request.user);
-    throw new NotImplementedException('Feature unavailable');
+  }
+
+  @HttpCode(HttpStatus.CREATED)
+  @Post('register')
+  async register(@Body() body: RegisterDto) {
+    return this.authService.register(body);
   }
 }

@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt/dist/jwt.service';
+import { RegisterDto } from './dtos/register.dto';
+
 
 @Injectable()
 export class AuthService {
@@ -8,7 +10,7 @@ export class AuthService {
   async login(user: any): Promise<any> {
     // Implement your login logic here, e.g., generating a JWT token.
     const token = this.jwtService.sign({ id: user.id });
-    return {  ...user, token };
+    return { ...user, token };
   }
 
   async validateUser(username: string, password: string): Promise<any> {
@@ -19,5 +21,12 @@ export class AuthService {
       return { id: 1, username: 'test' }; // Example user object
     }
     return null;
+  }
+
+  async register(userDto: RegisterDto): Promise<any> {
+    // Implement your user registration logic here
+    // For example, save the user to a database
+    console.log(userDto);
+    return { message: 'User registered successfully' };
   }
 }
